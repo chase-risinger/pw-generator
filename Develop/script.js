@@ -11,28 +11,7 @@ var includeUpper = false;
 var includeNum = false;
 var includeSpec = false;
 var fillOutForm = true;
-
 // Write password to the #password input
-
-function getNumberOfChars() {
-  var numberOfChars = window.prompt("How many characters? 8-128");
-  if (numberOfChars < 8 || numberOfChars > 128) {
-    window.alert("Please enter a number between 8 and 128");
-    return false
-  }
-  else {
-    return numberOfChars
-  }
-
-}
-
-function determineCharType() {
-  var includeLower1 = window.confirm("Would you like to include Lower Case?")
-  var includeUpper1 = window.confirm("Would you like to include Upper Case?")
-  var includeNum1 = window.confirm("Would you like to include Numbers?")
-  var includeSpec1 = window.confirm("Would you like to include Special Characters?")
-
-}
 
 function pickRandom(charPool) {
   return charPool[Math.floor(Math.random() * (charPool.length))]
@@ -40,26 +19,31 @@ function pickRandom(charPool) {
 };
 
 function check() {
-  if (includeLower1) {
+  if (document.getElementById("lower-case").checked === true) {
+    includeLower = true;
     pwPool = pwPool.concat(lettersLower);
     console.log(pwPool);
   }
-  if (includeUpper1) {
+  if (document.getElementById("upper-case").checked === true) {
+    includeUpper = true;
     pwPool = pwPool.concat(lettersUpper);
     console.log(pwPool);
   }
-  if (includeNum1) {
+  if (document.getElementById("numbers").checked === true) {
+    includeNum = true;
     pwPool = pwPool.concat(numbers);
     console.log(pwPool);
   }
-  if (includeSpec1) {
+  if (document.getElementById("spec-chars").checked === true) {
+    includeSpec = true;
     pwPool = pwPool.concat(specChars);
     console.log(pwPool);
   }
 }
 
 function noUserInput() {
-  if (!includeLower1 || !includeUpper1 || !includeNum1 || !includeSpec1) {
+  if (!document.getElementById("spec-chars").checked && !document.getElementById("numbers").checked &&
+    !document.getElementById("upper-case").checked && !document.getElementById("lower-case").checked) {
     window.alert("Please Pick at least one character-type option.");
   }
   if (!document.getElementById("char-length").value) {
@@ -79,16 +63,17 @@ function generatePassword(charNum) {
 
 
 function writePassword() {
-  getNumberOfChars()
-  determineCharType()
   noUserInput()
-  var charNum = numberOfChars;
+  var charNum = parseInt(document.getElementById("char-length").value);
   check()
   var password = generatePassword(charNum).join('');
   var passwordText = document.querySelector("#password");
   passwordText.value = password;
   pwPool = [];
 }
+
+
+
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
